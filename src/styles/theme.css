@@ -1,0 +1,20 @@
+@theme {
+  /* Merkkleur: genereert bg-brand-600, text-brand-600, border-brand-600, ... */
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #dce8ff;
+  --color-brand-200: #b9d1ff;
+  --color-brand-300: #8cb2ff;
+  --color-brand-400: #5e8cfb;
+  --color-brand-500: #3b6cf0;
+  --color-brand-600: #2a52d6;
+  --color-brand-700: #2342ad;
+  --color-brand-800: #223a8a;
+  --color-brand-900: #1f336e;
+
+  /* Typografie */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Radius: we overschrijven bestaande waarden, dus rounded-lg en rounded-xl worden jouw stijl */
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
+}
