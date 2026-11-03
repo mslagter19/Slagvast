@@ -12,8 +12,12 @@ export function ButtonPage() {
             />
 
             <ShowcaseSection title="Varianten">
-                <Button variant="primary">Primary</Button>
-                <Button variant="secondary">Secondary</Button>
+                <Button variant="primary" target="_blank" href="https://www.google.com">
+                    Primary
+                </Button>
+                <Button variant="secondary" to="/components/badge">
+                    Secondary
+                </Button>
                 <Button variant="outline">Outline</Button>
                 <Button variant="link">Link</Button>
             </ShowcaseSection>
@@ -29,14 +33,14 @@ export function ButtonPage() {
             </ShowcaseSection>
 
             <ShowcaseSection title="Iconen">
-                <Button startIcon={<span>🔍</span>}>Start icoon</Button>
-                <Button endIcon={<span>➡️</span>}>Eind icoon</Button>
-                <Button startIcon={<span>🔍</span>} endIcon={<span>➡️</span>}>
+                <Button leftIcon={<span>🔍</span>}>Start icoon</Button>
+                <Button rightIcon={<span>➡️</span>}>Eind icoon</Button>
+                <Button leftIcon={<span>🔍</span>} rightIcon={<span>➡️</span>}>
                     Beide iconen
                 </Button>
-                <Button startIcon={<span>🔍</span>} iconOnly aria-label="Zoeken" />
-                <Button endIcon={<span>➡️</span>} iconOnly aria-label="Volgende" />
-                <Button startIcon={<Plus size="16" />}>
+                <Button leftIcon={<span>🔍</span>} iconOnly aria-label="Zoeken" />
+                <Button rightIcon={<span>➡️</span>} iconOnly aria-label="Volgende" />
+                <Button leftIcon={<Plus size="16" />}>
                     Toevoegen
                 </Button>
             </ShowcaseSection>

@@ -1,4 +1,5 @@
 import type { ComponentProps, ReactNode } from "react"
+import { Link, type LinkProps } from "react-router-dom"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../lib/cn"
 
@@ -61,97 +62,90 @@ const buttonVariants = cva(
     }
 )
 
-type ButtonProps = ComponentProps<"button"> &
-    VariantProps<typeof buttonVariants> & {
-        startIcon?: ReactNode
-        endIcon?: ReactNode
-        loading?: boolean
-        loadingText?: string
-        pressed?: boolean
+// Props die alle drie de vormen delen
+type ButtonSharedProps = VariantProps<typeof buttonVariants> & {
+    leftIcon?: ReactNode
+    rightIcon?: ReactNode
+}
+// Vorm 1: een echte <button>. href mag hier NIET voorkomen.
+type ButtonAsButtonProps = ComponentProps<"button"> &
+    ButtonSharedProps & {
+        href?: undefined
+        to?: undefined
     }
 
-export function Button({
-    className,
-    variant,
-    size,
-    radius,
-    fullWidth,
-    animation,
-    iconOnly,
-    startIcon,
-    endIcon,
-    loading = false,
-    loadingText,
-    pressed,
-    disabled,
-    type = "button",
-    children,
-    ...props
-}: ButtonProps) {
+// Vorm 2: een <a>. href is hier VERPLICHT.
+type ButtonAsLinkProps = ComponentProps<"a"> &
+    ButtonSharedProps & {
+        href: string
+        to?: undefined
+    }
 
-    const isDisabled = disabled || loading
+// Vorm 3: React Router <Link> voor interne routes. to is verplicht (zit al in LinkProps).
+type ButtonAsRouterLinkProps = LinkProps &
+    ButtonSharedProps & {
+        href?: undefined
+    }
+
+type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps | ButtonAsRouterLinkProps
+
+// Eén plek voor de inhoud, zodat we de volgorde icoon-tekst-icoon niet drie keer schrijven
+type ButtonContentProps = Pick<ButtonSharedProps, "leftIcon" | "rightIcon"> & {
+    children?: ReactNode
+}
+
+function ButtonContent({ leftIcon, rightIcon, children }: ButtonContentProps) {
+    return (
+        <>
+            {leftIcon}
+            {children}
+            {rightIcon}
+        </>
+    )
+}
+
+export function Button(props: ButtonProps) {
+    // 1. Interne route
+    if (props.to !== undefined) {
+        const { className, variant, size, leftIcon, rightIcon, children, ...rest } = props
+
+        return (
+            <Link className={cn(buttonVariants({ variant, size }), className)} {...rest}>
+                <ButtonContent leftIcon={leftIcon} rightIcon={rightIcon}>
+                    {children}
+                </ButtonContent>
+            </Link>
+        )
+    }
+
+    // 2. Extern adres
+    if (props.href !== undefined) {
+        const { className, variant, size, leftIcon, rightIcon, children, target, rel, ...rest } = props
+
+        const safeRel = target === "_blank" ? "noopener noreferrer" : rel
+
+        return (
+            <a
+                className={cn(buttonVariants({ variant, size }), className)}
+                target={target}
+                rel={safeRel}
+                {...rest}
+            >
+                <ButtonContent leftIcon={leftIcon} rightIcon={rightIcon}>
+                    {children}
+                </ButtonContent>
+            </a>
+        )
+    }
+
+    // 3. Gewone knop
+    const { className, variant, size, leftIcon, rightIcon, children, type = "button", ...rest } = props
 
     return (
-        <button
-            type={type}
-            disabled={isDisabled}
-            aria-busy={loading || undefined}
-            aria-pressed={pressed}
-            data-pressed={pressed}
-            className={cn(
-                buttonVariants({
-                    variant,
-                    size,
-                    radius,
-                    fullWidth,
-                    animation,
-                    iconOnly,
-                }),
-                className
-            )}
-            {...props}
-        >
-            {/* Loading spinner */}
-            {loading ? (
-                <span
-                    className="size-4 shrink-0 animate-spin rounded-full border-2 border-current border-r-transparent motion-reduce:animate-none"
-                    role="status"
-                    aria-label="Loading"
-                />
-            ) : (
-                <>
-                    {/* Start icon */}
-                    {startIcon && (
-                        <span className="inline-flex shrink-0 items-center">
-                            {startIcon}
-                        </span>
-                    )}
-
-                    {/* Button label */}
-                    {!iconOnly && (
-                        <span>
-                            {loadingText && loading
-                                ? loadingText
-                                : children}
-                        </span>
-                    )}
-
-                    {/* End icon */}
-                    {endIcon && (
-                        <span
-                            className={cn(
-                                "inline-flex shrink-0 items-center",
-                                animation === "iconSlide" &&
-                                "transition-transform group-hover:translate-x-1 motion-reduce:transform-none",
-                                animation === "iconRotate" &&
-                                "transition-transform group-hover:rotate-12 motion-reduce:transform-none"
-                            )}
-                        >
-                            {endIcon}
-                        </span>
-                    )}
-                </>
-            )}
+        <button type={type} className={cn(buttonVariants({ variant, size }), className)} {...rest}>
+            <ButtonContent leftIcon={leftIcon} rightIcon={rightIcon}>
+                {children}
+            </ButtonContent>
         </button>
     )
 }
