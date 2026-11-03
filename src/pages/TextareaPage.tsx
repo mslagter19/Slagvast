@@ -3,8 +3,14 @@ import { Textarea } from "../components/ui/form/Textarea"
 import { FormField } from "../components/ui/form/FormField"
 import { PageHeader } from "../components/showcase/PageHeader"
 import { ShowcaseSection } from "../components/showcase/ShowcaseSection"
+import { usePageMeta } from "../hooks/usePageMeta"
 
 export function TextareaPage() {
+    usePageMeta({
+        title: "Textarea",
+        description: "Een meerregelig tekstveld dat de stijl met Input deelt."
+    })
+
     return (
         <>
             <PageHeader

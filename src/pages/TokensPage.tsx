@@ -1,21 +1,23 @@
 import { PageHeader } from "../components/showcase/PageHeader"
 import { ShowcaseSection } from "../components/showcase/ShowcaseSection"
+import { Typography } from "../components/ui/Typography"
+import themeCss from "../styles/theme.css?raw"
+import { parseColorScales } from "../lib/parseColorScales"
+import { ColorSwatch } from "../components/showcase/ColorSwatch"
+import { usePageMeta } from "../hooks/usePageMeta"
 
-// Volledige klassenamen staan vast in de code. Zie uitleg hieronder.
-const brandShades = {
-    50: "bg-brand-50",
-    100: "bg-brand-100",
-    200: "bg-brand-200",
-    300: "bg-brand-300",
-    400: "bg-brand-400",
-    500: "bg-brand-500",
-    600: "bg-brand-600",
-    700: "bg-brand-700",
-    800: "bg-brand-800",
-    900: "bg-brand-900",
+const colorScales = parseColorScales(themeCss)
+
+function capitalize(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
 export function TokensPage() {
+    usePageMeta({
+        title: "Tokens",
+        description: "De design tokens van Slagvast: kleur, typografie en radius."
+    })
+
     return (
         <>
             <PageHeader
@@ -23,21 +25,34 @@ export function TokensPage() {
                 description="De bouwstenen van Slagvast: kleur, typografie en radius."
             />
 
-            <ShowcaseSection title="Brandkleur" description="Gedefinieerd in styles/theme.css.">
-                {Object.entries(brandShades).map(([shade, className]) => (
-                    <div key={shade} className="w-16 text-center">
-                        <div className={`h-16 rounded-lg ${className}`} />
-                        <span className="mt-1 block text-xs text-slate-600">{shade}</span>
-                    </div>
-                ))}
-            </ShowcaseSection>
+            {colorScales.map((scale) => (
+                <ShowcaseSection key={scale.name} title={capitalize(scale.name)} description="Gedefinieerd in styles/theme.css, opgebouwd met cva.">
+                    {scale.tokens.map((token) => (
+                        <ColorSwatch
+                            key={token.label}
+                            variable={token.variable}
+                            label={token.shade}
+                            value={token.value}
+                        />
+                    ))}
+                </ShowcaseSection>
+            ))}
 
             <ShowcaseSection title="Typografie">
                 <div className="w-full space-y-2">
-                    <p className="text-4xl font-bold">Kop 4xl</p>
-                    <p className="text-2xl font-semibold">Kop 2xl</p>
-                    <p className="text-base">Lopende tekst base</p>
-                    <p className="text-sm text-slate-600">Kleine tekst sm</p>
+                    <Typography variant="h1">Kop 1</Typography>
+                    <Typography variant="h2">Kop 2</Typography>
+                    <Typography variant="h3">Kop 3</Typography>
+                    <Typography variant="h4">Kop 4</Typography>
+                    <Typography variant="h5">Kop 5</Typography>
+                    <Typography variant="h6">Kop 6</Typography>
+                    <br></br>
+                    <Typography variant="lead">Lead tekst</Typography>
+                    <Typography variant="body">Lopende tekst</Typography>
+                    <Typography variant="small">Kleine tekst</Typography>
+                    <br></br>
+                    <Typography variant="h1" className="text-brand-600">Kop 1 met className</Typography>
+                    <Typography variant="h2" as="h3" className="text-brand-600">Een h3 met styling van h2 en extra className</Typography>
                 </div>
             </ShowcaseSection>
 

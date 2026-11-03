@@ -2,8 +2,14 @@ import { Input } from "../components/ui/form/Input"
 import { FormField } from "../components/ui/form/FormField"
 import { PageHeader } from "../components/showcase/PageHeader"
 import { ShowcaseSection } from "../components/showcase/ShowcaseSection"
+import { usePageMeta } from "../hooks/usePageMeta"
 
 export function InputPage() {
+    usePageMeta({
+        title: "Input",
+        description: "Een inputveld met varianten en maten, opgebouwd met cva."
+    })
+
     return (
         <>
             <PageHeader
