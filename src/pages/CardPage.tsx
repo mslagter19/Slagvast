@@ -32,7 +32,7 @@ export function CardPage() {
             </ShowcaseSection>
             <ShowcaseSection title="Multiple + bordered">
                 <Card variant="elevated">
-                    <CardImage src="..." alt="..." badge={<Badge size="xs" radius="full" variant="secondary">Tip</Badge>} />
+                    <CardImage src="https://picsum.photos/640/360" alt="..." badge={<Badge size="xs" radius="full" variant="secondary">Tip</Badge>} />
                     <CardBody>
                         <CardTitle href="https://tailwindcss.com" target="_blank">Tailwind</CardTitle>
                         <CardDescription>Opent in een nieuw tabblad.</CardDescription>
