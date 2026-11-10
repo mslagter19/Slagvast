@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Slagvast/',
+  //base: '/Slagvast/',
+  base: process.env.VITE_BASE ?? '/',
   plugins: [react(), tailwindcss()],
 })
