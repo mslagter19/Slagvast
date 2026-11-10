@@ -41,7 +41,7 @@ export function CardPage() {
             </ShowcaseSection>
             <ShowcaseSection title="Seperated">
                 <Card direction="horizontal">
-                    <CardImage src="..." alt="..." wrapperClassName="sm:aspect-auto sm:w-48" />
+                    <CardImage src="https://picsum.photos/640/360" alt="..." wrapperClassName="sm:aspect-auto sm:w-48" />
                     <CardBody>...</CardBody>
                 </Card>
             </ShowcaseSection>
